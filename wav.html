@@ -6,11 +6,7 @@
   <title>Personality Report Generator</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: 'Poppins', sans-serif; margin: 0; background: #f8f9fa; text-align: center; 
-         
-      padding-bottom: 60px; /* Reserve space for the banner *
-          
-         }
+    body { font-family: 'Poppins', sans-serif; margin: 0; background: #f8f9fa; text-align: center; padding-bottom: 60px; }
     .page { display: none; padding: 40px 20px; }
     .active { display: block; }
     .container {
@@ -111,8 +107,13 @@
   </div>
 
   <div class="page" id="page3">
+    
     <canvas id="resultCanvas" width="1080" height="1720"></canvas>
     <a id="downloadLink">📥 Download or Share</a>
+     <div class="sticky-banner" id="bottomBanner">
+    🚀 Check out our new app! <a href="#">Download Now</a>
+    <button class="close-btn" onclick="document.getElementById('bottomBanner').style.display='none'">&times;</button>
+  </div>
   </div>
 
   <script>
