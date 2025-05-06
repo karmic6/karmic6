@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sticky Bottom Banner</title>
+  <style>
+    body {
+      margin: 0;
+      padding-bottom: 60px; /* Reserve space for the banner */
+      font-family: sans-serif;
+    }
+
+    .sticky-banner {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #f8e71c;
+      color: #000;
+      text-align: center;
+      padding: 10px 50px 10px 10px;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+      font-size: 16px;
+    }
+
+    .sticky-banner a {
+      color: #000;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #000;
+    }
+
+    @media (min-width: 768px) {
+      .sticky-banner {
+        display: none; /* Hide on desktop */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Banner -->
+  <div class="sticky-banner" id="bottomBanner">
+    🚀 Check out our new app! <a href="#">Download Now</a>
+    <button class="close-btn" onclick="document.getElementById('bottomBanner').style.display='none'">&times;</button>
+  </div>
+
+  <!-- Page Content -->
+  <div style="padding: 20px;">
+    <h1>Welcome to Our Website</h1>
+    <p>This is a demo page with a sticky bottom banner ad for mobile.</p>
+  </div>
+
+</body>
+</html>
