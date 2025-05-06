@@ -35,22 +35,17 @@
       color: #007bff; text-decoration: none; font-size: 18px;
       word-break: break-word;
     }
-    #advertisement {
-      position: fixed; bottom: 0; width: 100%; background: #fff3cd;
-      color: #856404; text-align: center; padding: 10px; font-size: 16px;
-      border-top: 1px solid #ffeeba; z-index: 1000;
-    }
-    #bannerAd {
-      display: none; position: fixed; bottom: 0; width: 100%; background: #fff3cd;
-      padding: 10px 20px; border-top: 1px solid #ffeeba; z-index: 1000;
-      display: flex; justify-content: space-between; align-items: center;
-    }
-    #bannerAd img { height: 40px; }
-    #bannerAd button {
-      background: #5cb85c; color: white; border: none;
-      padding: 10px 20px; border-radius: 8px; cursor: pointer;
+    @media screen and (max-width: 600px) {
+      canvas { width: 100% !important; height: auto !important; }
+      .container { margin: 20px auto; padding: 20px; }
     }
   </style>
+  <script id="_waumew" style="display: none;">
+    var _wau = _wau || []; 
+    _wau.push(["small", "330zxy12jw", "mew"]);
+    </script>
+    <script async src="//waust.at/s.js">
+    </script>
 </head>
 <body>
   <div class="page active" id="page1">
@@ -67,19 +62,12 @@
     <div class="container">
       <div id="loader"></div>
       <h3>Generating your personality report...</h3>
-      <p id="advertisement">*Advertisement*<br>We Amor dating app is offering 1 year free premium offer. Doesn’t appear on the app? Select 1 year premium and price automatically goes to $0.00 at final checkout.</p>
     </div>
   </div>
 
   <div class="page" id="page3">
     <canvas id="resultCanvas" width="1080" height="1720"></canvas>
     <a id="downloadLink">📥 Download or Share</a>
-  </div>
-
-  <div id="bannerAd">
-    <img src="https://weamor.com/logo.png" alt="We Amor Logo">
-    <span><strong>1 Year Free Premium Offer</strong></span>
-    <button onclick="window.location.href='https://weamor.com/download'">Download / Claim</button>
   </div>
 
   <script>
@@ -147,6 +135,130 @@
       else if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "Scorpio";
       else return "Sagittarius";
     }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(' ');
+      let line = '';
+      for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const testWidth = ctx.measureText(testLine).width;
+        if (testWidth > maxWidth && n > 0) {
+          ctx.fillText(line, x, y);
+          line = words[n] + ' ';
+          y += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line, x, y);
+    }
+
+    function isValidDate(dateString) {
+      if (!/^\d{2}\/\d{2}\/\d{4}$/.test(dateString)) return false;
+      const [day, month, year] = dateString.split('/').map(Number);
+      const date = new Date(year, month - 1, day);
+      return date.getFullYear() === year && date.getMonth() === month - 1 && date.getDate() === day;
+    }
+
+    function startGeneration() {
+      const name = document.getElementById('name').value.trim();
+      const dob = document.getElementById('dob').value.trim();
+
+      if (!name || !dob) {
+        alert("Please fill all fields!");
+        return;
+      }
+
+      if (!isValidDate(dob)) {
+        alert("Please enter a valid date in DD/MM/YYYY format.");
+        return;
+      }
+
+      document.getElementById("page1").classList.remove("active");
+      document.getElementById("page2").classList.add("active");
+
+      setTimeout(() => {
+        document.getElementById("page2").classList.remove("active");
+        document.getElementById("page3").classList.add("active");
+
+        const canvas = document.getElementById("resultCanvas");
+        const ctx = canvas.getContext("2d");
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const [day, month] = dob.split("/").map(d => parseInt(d));
+        const number = getNumerologyNumber(day);
+        const zodiac = getZodiacSign(day, month);
+
+        const numerology = numerologyData[number] || { traits: [], misunderstood: [] };
+        const zodiacT = zodiacData[zodiac] || [];
+        const zodiacM = zodiacMisunderstood[zodiac] || [];
+
+        const traits = [...new Set([...numerology.traits, ...zodiacT])];
+        const misunderstandings = [...new Set([...numerology.misunderstood, ...zodiacM])];
+
+        ctx.fillStyle = "#ffeef4";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#333";
+        ctx.textAlign = "center";
+        ctx.font = "bold 70px Poppins";
+        ctx.fillText("🔮 Personality Report", 540, 250);
+
+        ctx.font = "bold 48px Poppins";
+        ctx.fillText(`Name: ${name}`, 540, 330);
+        ctx.fillText(`Zodiac: ${zodiac}`, 540, 400);
+        ctx.fillText(`Number: ${number}`, 540, 470);
+
+        let y = 550;
+        ctx.font = "italic 40px Poppins";
+        ctx.fillStyle = "#777";
+        ctx.fillText("Generated by karmic6.com", canvas.width / 2, y);
+
+        y += 70;
+        ctx.textAlign = "center";
+        ctx.fillStyle = "#333";
+        ctx.font = "bold 48px Poppins";
+        ctx.fillText("🧠 Top Traits:", canvas.width / 2, y);
+
+        ctx.textAlign = "left";
+        ctx.font = "36px Poppins";
+        y += 60;
+        traits.forEach(t => {
+          wrapText(ctx, "✔ " + t, 100, y, 880, 46);
+          y += 60;
+        });
+
+        y += 40;
+        ctx.font = "bold 48px Poppins";
+        ctx.textAlign = "center";
+        ctx.fillText("⚠️ Misunderstandings:", canvas.width / 2, y);
+
+        ctx.textAlign = "left";
+        ctx.font = "36px Poppins";
+        y += 60;
+        misunderstandings.forEach(m => {
+          wrapText(ctx, "✖ " + m, 100, y, 880, 46);
+          y += 60;
+        });
+
+        canvas.style.display = "block";
+        const downloadLink = document.getElementById("downloadLink");
+        const imageData = canvas.toDataURL();
+        downloadLink.href = imageData;
+        downloadLink.download = `${name}_personality_report.png`;
+        downloadLink.style.display = "inline-block";
+      }, 2000);
+    }
+
+    window.onload = function () {
+      document.getElementById('generateBtn').onclick = startGeneration;
+
+      document.getElementById('dob').addEventListener('input', function (e) {
+        let val = this.value.replace(/\D/g, '');
+        if (val.length > 2) val = val.slice(0, 2) + '/' + val.slice(2);
+        if (val.length > 5) val = val.slice(0, 5) + '/' + val.slice(5);
+        this.value = val.slice(0, 10);
+      });
+    };
   </script>
 </body>
 </html>
