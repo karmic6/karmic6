@@ -39,6 +39,37 @@
       canvas { width: 100% !important; height: auto !important; }
       .container { margin: 20px auto; padding: 20px; }
     }
+    .sticky-ad {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #ff007f;
+  color: white;
+  text-align: center;
+  padding: 15px 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  display: none;
+  z-index: 999;
+}
+.sticky-ad img {
+  height: 24px;
+  vertical-align: middle;
+  margin-right: 10px;
+}
+.sticky-ad button {
+  background: #fff;
+  color: #ff007f;
+  border: none;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-left: 15px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
   </style>
   <script id="_waumew" style="display: none;">
     var _wau = _wau || []; 
@@ -62,6 +93,8 @@
     <div class="container">
       <div id="loader"></div>
       <h3>Generating your personality report...</h3>
+      <p style="color: #999; font-size: 14px; margin-top: 10px;"><em>*Advertisement*</em><br>
+We Amor dating app is offering 1 year free premium. It doesn’t appear on the app – just select 1 year premium and the price goes to $0.00 at final checkout.</p>
     </div>
   </div>
 
@@ -258,7 +291,25 @@
         if (val.length > 5) val = val.slice(0, 5) + '/' + val.slice(5);
         this.value = val.slice(0, 10);
       });
+      function toggleAdBanner(show) {
+  document.getElementById('bottomAd').style.display = show ? 'block' : 'none';
+}
+
+const observer = new MutationObserver(() => {
+  toggleAdBanner(
+    document.getElementById('page2').classList.contains('active') ||
+    document.getElementById('page3').classList.contains('active')
+  );
+});
+
+observer.observe(document.body, { childList: true, subtree: true });
+
     };
   </script>
+  <div class="sticky-ad" id="bottomAd">
+  <img src="https://weamor.online/logo.png" alt="We Amor Logo" />
+  1 Year Free Premium Offer
+  <button onclick="window.location.href='https://weamor.online/download.html'">Download / Claim</button>
+</div>
 </body>
 </html>
