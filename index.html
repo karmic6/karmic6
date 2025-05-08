@@ -66,6 +66,19 @@ fbq('track', 'PageView');
 src="https://www.facebook.com/tr?id=1234366474698692&ev=PageView&noscript=1"
 /></noscript>
 <!-- End Meta Pixel Code -->
+
+  <script>
+  document.getElementById('generateBtn').addEventListener('click', function() {
+    fbq('trackCustom', 'generateBtnclicked');
+  });
+</script>
+    <script>
+  document.getElementById('downloadLink').addEventListener('click', function() {
+    fbq('trackCustom', 'downloadBtnclicked');
+  });
+</script>
+
+  
 </head>
 <body>
   <div class="page active" id="page1">
